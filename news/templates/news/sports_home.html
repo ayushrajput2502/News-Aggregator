@@ -1,0 +1,73 @@
+{% extends "news/base.html" %}{% load social_share %}
+{% block content %}
+	<div>
+		<h1  class="heading">Sports News</h1>
+	</div>
+	   <div class="row" style="border-top: 2px solid rgba(0,0,0,0.3)">
+    {% for object in object_list|slice:":3" %}
+        <div class="col-md-4 mb-4">
+            <div class="news-container">
+                <div class="card" style="border: 2px black solid;">
+                    <img src="{{ object.image }}" class="card-img-top" alt="{{ object.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ object.url }}">{{ object.title }}</a>
+                        </h5>
+                        <p class="card-text">Source: {{ object.source }}</p>
+                    </div> <div class="icons">
+                       
+                        <button >
+                          {% post_to_telegram "New News:  {{object.url}}" object_or_url "<i class='fa-brands fa-telegram'></i>" %}
+                        </button>
+                        <button >
+                          {% post_to_twitter  "New News: {{ object.url }}" object_or_url "<i class='fa-brands fa-twitter'></i>" %}
+                        </button>
+                        <button onclick="
+                            var url = '{{ object.url }}';
+                            var textField = document.createElement('textarea');
+                            textField.innerText = url;
+                            document.body.appendChild(textField);
+                            textField.select();
+                            document.execCommand('copy');
+                            textField.remove();
+                            alert('URL copied: ' + url);
+                        ">
+                        <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <form method="post" action="{% url 'bookmarks' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="news_url" value="{{ object.url }}">
+                            <input type="hidden" name="news_title" value="{{ object.title }}">
+                            <input type="hidden" name="news_source" value="{{ object.source }}">
+                            <input type="hidden" name="news_image" value="{{ object.image }}">
+                            <button type="submit" ><i class="fa-solid fa-bookmark"></i></button>
+                        </form>
+                      </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+    <div class="d-flex justify-content-center">
+        {% if is_paginated %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+{% endblock content %}

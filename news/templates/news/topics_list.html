@@ -1,0 +1,73 @@
+{% extends "news/base.html" %}
+{% load static %}
+{% block content %}
+	<div class="p-b40" >
+		<div class="topic-container ">
+
+			<div>
+				<h1  class="heading" style='margin-top: 0;'>Categories</h1>
+				<u> </u>
+			</div>
+		<div class="container " style='border-top: 2px solid rgba(0,0,0,0.3);'>
+			<br>
+		  <div class="card-deck">
+		   <div class="card mr-4">
+
+                        <img class="card-img img-fluid" src="{% static 'news/images/tech5.jpeg' %}" alt="Card image">
+
+                    <div class="back">
+                        <a href="{% url 'scrape' %}" class="btn btn-primary">Tech</a>
+                    </div>
+                </div>
+
+		    <div class="card  mr-4">
+
+		        <img class="card-img" src="{% static 'news/images/sports5.jpeg' %}" alt="Card image">
+
+				<div class="back">
+		        <a href="{% url 'scrape2' %}" class="btn btn-primary">Sports</a>
+				</div>
+		    </div>
+			<div class="card mr-4" >
+
+		     	<img class="card-img" src="{% static 'news/images/entertainment5.jpeg' %}" alt="Card image" >
+
+				<div class="back">
+		        <a href="{% url 'scrape5' %}" class="btn btn-primary">Entertainment</a>
+				</div>
+			</div>
+		  </div>
+		</div><br><br><br>
+
+
+		<div class="container">
+		  <div class="card-deck">
+		    <div class="card mr-4" >
+
+		     	<img class="card-img" src="{% static 'news/images/politics5.jpeg' %}" alt="Card image"  >
+
+				<div class="back">
+		        <a href="{% url 'scrape3' %}" class="btn btn-primary">Politics</a>
+				</div>
+			</div>
+			<div class="card mr-4" >
+
+		     	<img class="card-img" src="{% static 'news/images/hf5.jpeg' %}" alt="Card image" >
+
+				<div class="back">
+		        <a href="{% url 'scrape4' %}" class="btn btn-primary">Lifestyle & Health</a>
+				</div>
+			</div>
+			    <div class="card mr-4">
+
+		        <img class="card-img" src="{% static 'news/images/eco5.jpeg' %}" alt="Card image"  >
+
+					<div class="back">
+		        <a href="{% url 'scrape1' %}" class="btn btn-primary">Economy</a>
+					</div>
+		    </div>
+		  </div>
+		</div>
+			</div>
+	</div>
+{% endblock content %}

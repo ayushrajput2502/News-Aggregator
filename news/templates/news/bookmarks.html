@@ -1,0 +1,52 @@
+{% extends "news/base.html" %}
+{% load social_share %}
+{% block content %}
+<div>
+    <h1 class="heading">Bookmarks</h1>
+</div>
+<div class="row" style="border-top: 2px solid rgba(0,0,0,0.3)">
+    {% for object in display%}
+        <div class="col-md-4 mb-4">
+            <div class="news-container">
+                <div class="card" style="border: 2px black solid;">
+                    <img src="{{ object.image }}" class="card-img-top" alt="{{ object.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ display.news_url }}">{{ object.title }}</a>
+                        </h5>
+                        <p class="card-text">Source: {{ object.source }}</p>
+                    </div>
+                    <div class="icons">
+                        <button>
+                            {% post_to_telegram "New News:  {{object.news_url}}" object_or_url "<i class='fa-brands fa-telegram'></i>" %}
+                        </button>
+                        <button>
+                            {% post_to_twitter  "New News: {{ object.news_url }}" object_or_url "<i class='fa-brands fa-twitter'></i>" %}
+                        </button>
+                        <button onclick="
+                        var url = '{{ object.news_url }}';
+                        var textField = document.createElement('textarea');
+                        textField.innerText = url;
+                        document.body.appendChild(textField);
+                        textField.select();
+                        document.execCommand('copy');
+                        textField.remove();
+                        alert('URL copied: ' + url);
+                    ">
+                    <i class="fa-solid fa-copy"></i>
+                    </button>
+                    <form method="post" action="{% url 'bookmark_view' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="news_url" value="{{ object.news_url }}">
+                        <input type="hidden" name="news_title" value="{{ object.title }}">
+                        <input type="hidden" name="news_source" value="{{ object.source }}">
+                        <input type="hidden" name="news_image" value="{{ object.image }}">
+                        <button type="submit"  ><i class="fa-solid fa-bookmark"></i></button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}
